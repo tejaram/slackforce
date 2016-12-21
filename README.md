@@ -1,5 +1,7 @@
 # Slackforce
 
+SALESFORCE AND SLACK INTEGRATION WORKING CODE : 
+
 A simple Node.js application that acts as a Slash Command message broker between Slack and Salesforce.
 
 
