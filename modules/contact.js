@@ -47,11 +47,18 @@ exports.execute = (req, res) => {
                 let attachments = [];
                 contacts.forEach(function(contact) {
                     let fields = [];
-                    fields.push({title: "Name", value: contact.Description__c, short:true});                    
+                    let image_url = opportunity.image_location__c;
+                    fields.push({title: "Description", value: contact.Description__c, short:true});                    
                     fields.push({title: "URL for FitVideo:", value: contact.image_location__c, short:false});
-                    attachments.push({color: "#A094ED", fields: fields});
+                    attachments.push(
+                        {
+                            color: "#A094ED", 
+                            fields: fields, 
+                            image_url:image_url
+                        }
+                        );
                 });
-                res.json({text: "Contacts matching '" + req.body.text + "':", attachments: attachments});
+                res.json({text: "FitVideo From FitBliss '" , attachments: attachments});
             } else {
                 res.send("No records");
             }
