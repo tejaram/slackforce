@@ -16,7 +16,7 @@ exports.execute = (req, res) => {
         oauthObj = auth.getOAuthObject(slackUserId),
         limit = req.body.text,
         //q = "SELECT Id, Name, Amount, Probability, StageName, CloseDate FROM Opportunity where isClosed=false ORDER BY amount DESC LIMIT " + limit;
-        q = "SELECT Id, Name FROM FitTips__c  LIMIT 1"; //+ limit;
+        q = "SELECT Id, Name, Description__c, image_location__c FROM FitTips__c where Time_of_Day__c = 'Late Morning' AND FitVideo__C = false AND Type__c='Stress' LIMIT 1"; //+ limit;
 
     if (!limit || limit=="") limit = 5;
 
@@ -27,7 +27,8 @@ exports.execute = (req, res) => {
                 let attachments = [];
                 opportunities.forEach(function (opportunity) {
                     let fields = [];
-                    fields.push({title: "Opportunity", value: opportunity.Name, short: true});
+                    let image_url = opportunity.image_location__c;
+                    fields.push({title: "Opportunity", value: opportunity.Description__c, short: true});
                     //fields.push({title: "Stage", value: opportunity.StageName, short: true});
                     /*fields.push({
                         title: "Amount",
@@ -41,7 +42,8 @@ exports.execute = (req, res) => {
                     fields.push({title: "Open in Salesforce:", value: oauthObj.instance_url + "/" + opportunity.Id, short:false});
                     attachments.push({
                         color: "#FCB95B",
-                        fields: fields
+                        fields: fields,
+                        image_url : image_url
                     });
                 });
                 res.json({
