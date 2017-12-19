@@ -26,11 +26,9 @@ exports.execute = (req, res) => {
                 accounts.forEach(function(account) {
                     let fields = [];
                     fields.push({title: "Name", value: account.Name, short:true});
-                    fields.push({title: "Type", value: account.Type__c, short:true});
-                    if (account.BillingAddress) {
-                        fields.push({title: "End Date", value: account.End__c, short:true});
-                        fields.push({title: "Prize", value: account.Prize__c, short:true});
-                    }
+                    fields.push({title: "Type", value: account.Type__c, short:true});                    
+                    fields.push({title: "End Date", value: account.End__c, short:true});
+                    fields.push({title: "Prize", value: account.Prize__c, short:true});
                     fields.push({title: "Open in Salesforce:", value: oauthObj.instance_url + "/" + account.Id, short:false});
                     attachments.push({color: "#7F8DE1", fields: fields});
                 });
