@@ -14,15 +14,20 @@ exports.execute = (req, res) => {
     
     let slackUserId = req.body.user_id,
         oauthObj = auth.getOAuthObject(slackUserId),
-        userId;
+        userId = '';
 
     force.whoami(oauthObj)
         .then(data => {
             let userInfo = JSON.parse(data);
             userId = userInfo.user_id;
         })
-        .catch(error => {            
-            res.send("An error as occurred");            
+        .catch(error => {
+            if (error.code == 401) {
+                res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + slackUserId);
+            } else {
+                console.log(error);
+                res.send("An error as occurred");
+            }
         });
     let q = "SELECT id, Activity_Calories__c, Calories_Burned__c, Date__c, Steps__c, Distance__c,Sedentary_Minutes__c,"+
         " Floors__c, Duration__c, Note__c, Image__c, User__r.fullphotoURL, User__r.Name "+
