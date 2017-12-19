@@ -11,7 +11,8 @@ exports.execute = (req, res) => {
         res.send("Invalid token");
         return;
     }
-    let userId;
+    let userId,
+    oauthObj = auth.getOAuthObject(slackUserId);
     force.whoami(oauthObj)
         .then(data => {
             userId = userInfo.user_id;
