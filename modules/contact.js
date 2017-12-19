@@ -47,7 +47,7 @@ exports.execute = (req, res) => {
                 let attachments = [];
                 contacts.forEach(function(contact) {
                     let fields = [];
-                    let image_url = opportunity.image_location__c;
+                    let image_url = contact.image_location__c;
                     fields.push({title: "Description", value: contact.Description__c, short:true});                    
                     fields.push({title: "URL for FitVideo:", value: contact.image_location__c, short:false});
                     attachments.push(
