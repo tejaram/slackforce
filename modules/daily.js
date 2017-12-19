@@ -13,14 +13,15 @@ exports.execute = (req, res) => {
     }
     
     let slackUserId = req.body.user_id,
-        oauthObj = auth.getOAuthObject(slackUserId),
-        userId = '';
+        oauthObj = auth.getOAuthObject(slackUserId);
+    var userId = '';
 
     force.whoami(oauthObj)
         .then(data => {
             let userInfo = JSON.parse(data);
             console.log(userInfo);
             userId = userInfo.user_id;
+            console.log('Tejaram'+userId);
         })
         .catch(error => {
             if (error.code == 401) {
