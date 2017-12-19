@@ -52,9 +52,9 @@ exports.execute = (req, res) => {
                     fields.push({title: "Open in Salesforce:", value: oauthObj.instance_url + "/" + account.Id, short:false});
                     attachments.push({color: "#7F8DE1", fields: fields});
                 });
-                res.json({text: "FitChallenges: ", attachments: attachments});
+                res.json({text: "Your Stats: ", attachments: attachments});
             } else {
-                res.send("There are no FitChallenges going on right now!");
+                res.send("Please sync your wearable/app!");
             }
         })
         .catch(error => {
