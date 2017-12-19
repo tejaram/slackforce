@@ -58,7 +58,7 @@ exports.execute = (req, res) => {
                         }
                         );
                 });
-                res.json({text: "FitVideo From FitBliss '" , attachments: attachments});
+                res.json({text: "FitVideo From FitBliss " , attachments: attachments});
             } else {
                 res.send("No records");
             }
