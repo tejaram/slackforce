@@ -11,9 +11,34 @@ exports.execute = (req, res) => {
         return;
     }*/
 
+    let timeofday = 'Late Morning';
+    var date =  new Date();
+    var current_hour = date.getHours();
+    if(current_hour>=2 && current_hour<=8)
+    {
+        timeofday = 'Early Morning';
+    }
+    else if(current_hour>=9 && current_hour<=13)
+    {
+        timeofday = 'Late Morning';
+    }
+    else if(current_hour>= 14 && current_hour<=18)
+    {
+        timeofday = 'Afternoon';
+    }
+    else if(current_hour>= 18 && current_hour<=24)
+    {
+        timeofday = 'Evening';
+    }
+    else 
+    {
+        timeofday = 'Evening';
+    }
+
     let slackUserId = req.body.user_id,
         oauthObj = auth.getOAuthObject(slackUserId),
-        q = "SELECT Id, Name, Phone, MobilePhone, Email FROM Contact WHERE Name LIKE '%" + req.body.text + "%' LIMIT 5";
+        q = "SELECT Id, Name, Description__c, image_location__c FROM FitTips__c where Time_of_Day__c ='" + timeofday + "'  AND FitVideo__C = true LIMIT 1"; //+ limit;
+        //q = "SELECT Id, Name, Phone, MobilePhone, Email FROM Contact WHERE Name LIKE '%" + req.body.text + "%' LIMIT 5";
 
     force.query(oauthObj, q)
         .then(data => {
@@ -22,11 +47,8 @@ exports.execute = (req, res) => {
                 let attachments = [];
                 contacts.forEach(function(contact) {
                     let fields = [];
-                    fields.push({title: "Name", value: contact.Name, short:true});
-                    fields.push({title: "Phone", value: contact.Phone, short:true});
-                    fields.push({title: "Mobile", value: contact.MobilePhone, short:true});
-                    fields.push({title: "Email", value: contact.Email, short:true});
-                    fields.push({title: "Open in Salesforce:", value: oauthObj.instance_url + "/" + contact.Id, short:false});
+                    fields.push({title: "Name", value: contact.Description__c, short:true});                    
+                    fields.push({title: "URL for FitVideo:", value: contact.image_location__c, short:false});
                     attachments.push({color: "#A094ED", fields: fields});
                 });
                 res.json({text: "Contacts matching '" + req.body.text + "':", attachments: attachments});
