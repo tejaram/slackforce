@@ -14,7 +14,9 @@ exports.execute = (req, res) => {
 
     let slackUserId = req.body.user_id,
         oauthObj = auth.getOAuthObject(slackUserId),
-        q = "SELECT Id, Name, Phone, BillingAddress FROM Account WHERE Name LIKE '%" + req.body.text + "%' LIMIT 5";
+        q = "select Id, Name, Status__c,End__c,start__c,Winning_Score2__c,Type_Unit__c,Winner__c,Type__c,Prize__c from "+
+            "FitChallenge__c WHERE Name LIKE '%" + req.body.text + "%'  order by start__c desc LIMIT 2";
+        //q = "SELECT Id, Name, Phone, BillingAddress FROM Account WHERE Name LIKE '%" + req.body.text + "%' LIMIT 5";AND Status__c = 'In Progress'
 
     force.query(oauthObj, q)
         .then(data => {
@@ -24,17 +26,17 @@ exports.execute = (req, res) => {
                 accounts.forEach(function(account) {
                     let fields = [];
                     fields.push({title: "Name", value: account.Name, short:true});
-                    fields.push({title: "Phone", value: account.Phone, short:true});
+                    fields.push({title: "Type", value: account.Type__c, short:true});
                     if (account.BillingAddress) {
-                        fields.push({title: "Address", value: account.BillingAddress.street, short:true});
-                        fields.push({title: "City", value: account.BillingAddress.city + ', ' + account.BillingAddress.state, short:true});
+                        fields.push({title: "End Date", value: account.End__c, short:true});
+                        fields.push({title: "Prize", value: account.Prize__c, short:true});
                     }
                     fields.push({title: "Open in Salesforce:", value: oauthObj.instance_url + "/" + account.Id, short:false});
                     attachments.push({color: "#7F8DE1", fields: fields});
                 });
-                res.json({text: "Accounts matching '" + req.body.text + "':", attachments: attachments});
+                res.json({text: "FitChallenges: ", attachments: attachments});
             } else {
-                res.send("No records");
+                res.send("There are no FitChallenges going on right now!");
             }
         })
         .catch(error => {
