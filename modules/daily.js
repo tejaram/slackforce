@@ -11,18 +11,17 @@ exports.execute = (req, res) => {
         res.send("Invalid token");
         return;
     }
-    let userId,
-    oauthObj = auth.getOAuthObject(slackUserId);
-    force.whoami(oauthObj)
-        .then(data => {
-            userId = userInfo.user_id;
-        })
-        .catch(error => {            
-            res.send("An error as occurred");            
-        });
-
+    
     let slackUserId = req.body.user_id,
         oauthObj = auth.getOAuthObject(slackUserId),
+        userId,
+        force.whoami(oauthObj)
+            .then(data => {
+                userId = userInfo.user_id;
+            })
+            .catch(error => {            
+                res.send("An error as occurred");            
+            }),
         q = "SELECT id, Activity_Calories__c, Calories_Burned__c, Date__c, Steps__c, Distance__c,Sedentary_Minutes__c,"+
         " Floors__c, Duration__c, Note__c, Image__c, User__r.fullphotoURL, User__r.Name "+
             "FROM Daily_FitConnect__c where User__c = '"+userId+"'' AND date__c = TODAY limit 1";
