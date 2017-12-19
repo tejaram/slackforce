@@ -15,7 +15,8 @@ exports.execute = (req, res) => {
     let slackUserId = req.body.user_id,
         oauthObj = auth.getOAuthObject(slackUserId),
         limit = req.body.text,
-        q = "SELECT Id, Name, Amount, Probability, StageName, CloseDate FROM Opportunity where isClosed=false ORDER BY amount DESC LIMIT " + limit;
+        //q = "SELECT Id, Name, Amount, Probability, StageName, CloseDate FROM Opportunity where isClosed=false ORDER BY amount DESC LIMIT " + limit;
+        q = "SELECT Id, Name FROM FitTips_c__x  LIMIT 1"; //+ limit;
 
     if (!limit || limit=="") limit = 5;
 
@@ -27,8 +28,8 @@ exports.execute = (req, res) => {
                 opportunities.forEach(function (opportunity) {
                     let fields = [];
                     fields.push({title: "Opportunity", value: opportunity.Name, short: true});
-                    fields.push({title: "Stage", value: opportunity.StageName, short: true});
-                    fields.push({
+                    //fields.push({title: "Stage", value: opportunity.StageName, short: true});
+                    /*fields.push({
                         title: "Amount",
                         value: new Intl.NumberFormat('en-US', {
                             style: 'currency',
@@ -36,7 +37,7 @@ exports.execute = (req, res) => {
                         }).format(opportunity.Amount),
                         short: true
                     });
-                    fields.push({title: "Probability", value: opportunity.Probability + "%", short: true});
+                    fields.push({title: "Probability", value: opportunity.Probability + "%", short: true});*/
                     fields.push({title: "Open in Salesforce:", value: oauthObj.instance_url + "/" + opportunity.Id, short:false});
                     attachments.push({
                         color: "#FCB95B",
@@ -44,7 +45,8 @@ exports.execute = (req, res) => {
                     });
                 });
                 res.json({
-                    text: "Top " + limit + " opportunities in the pipeline:",
+                    text: "FitTip FROM FitBliss",
+                    //text: "Top " + limit + " opportunities in the pipeline:",
                     attachments: attachments
                 });
             } else {
