@@ -12,11 +12,35 @@ exports.execute = (req, res) => {
         return;
     }
 
+    let timeofday = 'Late Morning';
+    var date =  new Date();
+    var current_hour = date.getHours();
+    if(current_hour>=2 && current_hour<=8)
+    {
+        timeofday = 'Early Morning';
+    }
+    else if(current_hour>=9 && current_hour<=13)
+    {
+        timeofday = 'Late Morning';
+    }
+    else if(current_hour>= 14 && current_hour<=18)
+    {
+        timeofday = 'Afternoon';
+    }
+    else if(current_hour>= 18 && current_hour<=24)
+    {
+        timeofday = 'Evening';
+    }
+    else 
+    {
+        timeofday = 'Evening';
+    }
+
     let slackUserId = req.body.user_id,
         oauthObj = auth.getOAuthObject(slackUserId),
         limit = req.body.text,
         //q = "SELECT Id, Name, Amount, Probability, StageName, CloseDate FROM Opportunity where isClosed=false ORDER BY amount DESC LIMIT " + limit;
-        q = "SELECT Id, Name, Description__c, image_location__c FROM FitTips__c where Time_of_Day__c = 'Late Morning' AND FitVideo__C = false AND Type__c='Stress' LIMIT 1"; //+ limit;
+        q = "SELECT Id, Name, Description__c, image_location__c FROM FitTips__c where Time_of_Day__c ='" + timeofday + "'  AND FitVideo__C = false LIMIT 1"; //+ limit;
 
     if (!limit || limit=="") limit = 5;
 
@@ -28,7 +52,7 @@ exports.execute = (req, res) => {
                 opportunities.forEach(function (opportunity) {
                     let fields = [];
                     let image_url = opportunity.image_location__c;
-                    fields.push({title: "Opportunity", value: opportunity.Description__c, short: true});
+                    fields.push({title: "FitTip", value: opportunity.Description__c, short: true});
                     //fields.push({title: "Stage", value: opportunity.StageName, short: true});
                     /*fields.push({
                         title: "Amount",
@@ -47,7 +71,7 @@ exports.execute = (req, res) => {
                     });
                 });
                 res.json({
-                    text: "FitTip FROM FitBliss",
+                    //text: "FitTip From FitBliss",
                     //text: "Top " + limit + " opportunities in the pipeline:",
                     attachments: attachments
                 });
