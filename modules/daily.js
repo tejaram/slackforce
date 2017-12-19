@@ -24,7 +24,7 @@ exports.execute = (req, res) => {
         oauthObj = auth.getOAuthObject(slackUserId),
         q = "SELECT id, Activity_Calories__c, Calories_Burned__c, Date__c, Steps__c, Distance__c,Sedentary_Minutes__c,"+
         " Floors__c, Duration__c, Note__c, Image__c, User__r.fullphotoURL, User__r.Name "+
-            "FROM Daily_FitConnect__c where User__c = '"+userId+"'' AND date__c = TODAY limit 1"
+            "FROM Daily_FitConnect__c where User__c = '"+userId+"'' AND date__c = TODAY limit 1";
         //q = "select Id, Name, Status__c,End__c,start__c,Winning_Score2__c,Type_Unit__c,Winner__c,Type__c,Prize__c from "+
         //    "FitChallenge__c WHERE Name LIKE '%" + req.body.text + "%'  order by start__c desc LIMIT 2";
         //q = "SELECT Id, Name, Phone, BillingAddress FROM Account WHERE Name LIKE '%" + req.body.text + "%' LIMIT 5";
@@ -55,6 +55,7 @@ exports.execute = (req, res) => {
             if (error.code == 401) {
                 res.send(`Visit this URL to login to Salesforce: https://${req.hostname}/login/` + slackUserId);
             } else {
+                console.log(error);
                 res.send("An error as occurred");
             }
         });
