@@ -5,6 +5,7 @@ let express = require('express'),
     auth = require('./modules/slack-salesforce-auth'),
     contact = require('./modules/contact'),
     account = require('./modules/account'),
+    account = require('./modules/daily'),
     opportunity = require('./modules/opportunity'),
     _case = require('./modules/case'),
     whoami = require('./modules/whoami'),
@@ -24,6 +25,7 @@ app.post('/actions', actions.handle);
 app.post('/pipeline', opportunity.execute);
 app.post('/contact', contact.execute);
 app.post('/account', account.execute);
+app.post('/dailystats', daily.execute);
 app.post('/case', _case.execute);
 app.post('/whoami', whoami.execute);
 app.post('/login', auth.loginLink);

@@ -47,6 +47,11 @@
         "description": "Slack token for the whoami slash command",
         "value":"",
         "required":false
+    },
+    "SLACK_DAILY_TOKEN": {
+        "description": "Slack token for the dailystats slash command",
+        "value":"",
+        "required":false
     }
   }
 }
