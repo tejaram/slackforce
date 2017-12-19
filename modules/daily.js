@@ -19,6 +19,7 @@ exports.execute = (req, res) => {
     force.whoami(oauthObj)
         .then(data => {
             let userInfo = JSON.parse(data);
+            console.log(userInfo);
             userId = userInfo.user_id;
         })
         .catch(error => {
