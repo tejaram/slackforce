@@ -21,7 +21,8 @@ exports.execute = (req, res) => {
             let attachments = [];
             let fields = [];
             fields.push({title: "Name", value: userInfo.name, short:true});
-            fields.push({title: "Salesforce User Name", value: userInfo.preferred_username, short:true});
+            fields.push({title: "FitBliss User Name", value: userInfo.preferred_username, short:true});
+            fields.push({title: "Login Here:", value: oauthObj.instance_url, short:false});
             attachments.push({color: "#65CAE4", fields: fields});
             res.json({text: "Your User Information:", attachments: attachments});
         })
